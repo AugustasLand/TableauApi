@@ -1,9 +1,10 @@
 from zipfile import ZipFile as zip
 import os
+import json
 
-def unzip_tds(file_path):
+def unzip(file_path):
     with zip(file_path, 'r') as f:
-        file = [file for file in f.namelist() if file.endswith(".tds")].pop()
+        file = [file for file in f.namelist() if file.endswith(".tds") or file.endswith(".twb")].pop()
         f.extract(file)
     return file
 
@@ -39,5 +40,26 @@ def filter_change(tds_file, tdsx_path, filter_list):
     with zip(tdsx_path, 'w') as z:
         z.write(tds_file)
 
-
+def write_measures(wb_name, dict):
+    with open(wb_name + ".twb", "r") as t:
+        temp_file = t.read().splitlines()
+        pre_line = ""
+        for line in temp_file:
+            if "formula" in line and "caption" in pre_line:
+                formula = line.split("formula='")[1].split("'")[0]
+                formula = formula.replace("&", "").replace("#", "").replace("\\", "")
+                try:
+                    name = pre_line.split("caption='")[1].split("'")[0]
+                    id = pre_line.split("name='")[1].split("'")[0]
+                    update = True
+                    for item in dict:
+                        if id == dict[item]["id"]:
+                            update = False
+                            break
+                    if update:
+                        dict.update({name: {"id": id, "formula": formula, "wb_name": wb_name}})
+                except:
+                    pass
+            pre_line = line
+    return dict
 

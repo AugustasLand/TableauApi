@@ -113,22 +113,20 @@ class server_con():
             if self.type == "wb":
                 server.workbooks.populate_connections(item)
                 for con in item.connections:
-                    # print("Project path: " + project +", Datasource name: " +
-                    #       con.datasource_name + ", Datasource id: " + con.datasource_id)
-                    pass
+                    print("Project path: " + project +", Datasource name: " +
+                          con.datasource_name + ", Datasource id: " + con.datasource_id)
             elif self.type == "ds":
                 server.datasources.populate_connections(item)
                 for con in item.connections:
-                    # print("Datasource project: " + project + ", Connection type: " +
-                    #       con.connection_type + ", Connection ID: " + con.id)
-                    pass
+                    print("Datasource project: " + project + ", Connection type: " +
+                          con.connection_type + ", Connection ID: " + con.id)
 
 
     def finder(self, proj_id, dsite, dproj_id, cmd, extract):
         found = False
         if proj_id != None:
             if self.temp_name != None:
-                name = self.temp_name
+                self.name = self.temp_name
             for item in self.item_list:
                 if ((not self.star_name and self.name == item.name) or (self.star_name
                                                                         and self.name == item.name[:len(self.name)]))\
@@ -166,8 +164,7 @@ class server_con():
         print("Downloaded")
         if cmd == "copy":
             self.publisher(item, dsite, dproj_id, file_path)
-        elif cmd == "change_filter":
-            print("Downloaded")
+        else:
             return file_path
 
 
@@ -178,15 +175,14 @@ class server_con():
             new_ds = TSC.DatasourceItem(dproj_id, item.name)
             try:
                 server.datasources.publish(new_ds, file_path=path, mode="Overwrite", connection_credentials=credentials)
-            except:
-                print("There was an error publishing " + item.name)
+            except Exception as e:
+                print("There was an error publishing " + item.name, "Exception: " + str(e))
         elif self.type == "wb":
             new_wb = TSC.WorkbookItem(dproj_id, item.name)
             try:
                 server.workbooks.publish(new_wb, file_path=path, mode="Overwrite", connection_credentials=credentials)
-            except:
-                print("There was an error publishing " + item.name)
-            # print("Error: Data source not present, workbook was not published")
+            except Exception as e:
+                print("There was an error publishing " + item.name, "Exception: " + str(e))
         self.alt_site(dsite, "out")
         os.remove(path)
         print("Published")

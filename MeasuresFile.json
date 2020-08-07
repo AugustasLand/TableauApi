@@ -1,0 +1,92 @@
+{
+  "Refresh full extract": {
+    "id": "[Parameter 1]",
+    "formula": "false",
+    "wb_name": "test"
+  },
+  "Usage (MB)": {
+    "id": "[Calculation_719450089216147458]",
+    "formula": "[resource_consumption]/1024/1024",
+    "wb_name": "test"
+  },
+  "cos name": {
+    "id": "[Calculation_743375478405484546]",
+    "formula": "if [cos]=&apos;1149&apos; then &quot;Ubigi JLR Italy&quot;&#13;&#10;ELSEIF [cos]=&apos;1150&apos; then &quot;Ubigi JLR UK&quot;&#13;&#10;elseif [cos]=&apos;1151&apos; then &quot;Ubigi JLR Germany&quot;&#13;&#10;ELSEIF [cos]=&apos;1152&apos; then &quot;Ubigi JLR UK Employee&quot;&#13;&#10;end",
+    "wb_name": "test"
+  },
+  "charged_minutes[MIN]": {
+    "id": "[Calculation_2510715144721276]",
+    "formula": "IIF( [record_type_id]=1,(INT([usu]/60)*60+60),0)/60",
+    "wb_name": "test"
+  },
+  "Is Prepaid": {
+    "id": "[Calculation_537335781071962112]",
+    "formula": "IIF( ISNULL([subs_acc_id]), false, true)",
+    "wb_name": "test"
+  },
+  "mvno_name": {
+    "id": "[Calculation_537335781076037634]",
+    "formula": "IIF([mvno_id] = &apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos;, IIF([Calculation_537335781071962112], &quot;Transatel DataSIM (901)&quot;, &quot;Transatel Mobile Data Only&quot; ), [mvno_name])",
+    "wb_name": "test"
+  },
+  "Usage[\\#/MIN/MB]": {
+    "id": "[Calculation_6510626141919681]",
+    "formula": "IF [record_type_id]=1 then  [usu]/60&\\#13;&\\#10;elseif [record_type_id]=2 then [usu]&\\#13;&\\#10;elseif [record_type_id]=3 &\\#13;&\\#10;then iif([mvno_id]=&apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos; and ISNULL([subs_acc_id]), [usu]/1024/1024, IFNULL([resource_usu_1],0)/1024/1024+IFNULL([resource_impact_2],0)/1024+IFNULL([resource_impact_3],0)/1024)&\\#13;&\\#10;else null end&\\#13;&\\#10;&\\#13;&\\#10;// elseif [record_type_id]=3 and [mvno_id]=&apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos; and NOT ISNULL([subs_acc_id])&\\#13;&\\#10;//then ([resource_usu_1]/1024/1024+[resource_impact_2]/1024+[resource_impact_3]/1024)",
+    "wb_name": "test"
+  },
+  "resource_name": {
+    "id": "[Calculation_705094876516888580]",
+    "formula": "IF [mvno_id]=&apos;MVNA_PAYG_FR_OFR_LFM&apos; then &\\#13;&\\#10;case [resource_name_1] &\\#13;&\\#10;when &apos;DATA_BUNDLE&apos; then &apos;DATA FR OLD&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_2&apos; then &apos;BUNDLE_FR&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM&apos; then &apos;BUNDLE EU OLD&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM_2&apos; then &apos;BUNDLE EU&apos; &\\#13;&\\#10;else [resource_name_1]&\\#13;&\\#10;END&\\#13;&\\#10;&\\#13;&\\#10;ELSEIF [mvno_id]=&apos;MVNO_WW_TSL_LFM_DATAONLY&apos; then &\\#13;&\\#10;case [resource_name_1] &\\#13;&\\#10;when &apos;DATA_BUNDLE&apos; then &apos;BUNDLE Z1&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_2&apos; then &apos;BUNDLE Z2&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM&apos; then &apos;BUNDLE Z3&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM_2&apos; then &apos;BUNDLE Z4&apos; &\\#13;&\\#10;else [resource_name_1]&\\#13;&\\#10;END&\\#13;&\\#10;&\\#13;&\\#10;ELSEIF [mvno_id]=&apos;MVNO_WW_TSL_BITEBIRD&apos; then &\\#13;&\\#10;case [resource_name_1] &\\#13;&\\#10;when &apos;DATA_BUNDLE&apos; then &apos;BUNDLE Z1&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_2&apos; then &apos;BUNDLE Z2&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM&apos; then &apos;BUNDLE Z3&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM_2&apos; then &apos;BUNDLE Z4&apos; &\\#13;&\\#10;else [resource_name_1]&\\#13;&\\#10;END&\\#13;&\\#10;&\\#13;&\\#10;ELSEIF [mvno_id]=&apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos; then &\\#13;&\\#10;case [resource_name_1] &\\#13;&\\#10;when &apos;DATA_BUNDLE&apos; then &apos;BUNDLE Z1&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_2&apos; then &apos;BUNDLE Z2&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM&apos; then &apos;BUNDLE Z3&apos; &\\#13;&\\#10;when &apos;DATA_BUNDLE_ROAM_2&apos; then &apos;BUNDLE Z4&apos; &\\#13;&\\#10;else [resource_name_1]&\\#13;&\\#10;END&\\#13;&\\#10;&\\#13;&\\#10;else [resource_name_1]&\\#13;&\\#10;END",
+    "wb_name": "test"
+  },
+  "Charging[EUR]": {
+    "id": "[credit_charge[GBP]] (copy)]",
+    "formula": "(IF [resource_name_1]=&apos;MAIN_CREDIT&apos; then [resource_impact_1]&\\#13;&\\#10;ELSEIF  [resource_name_2]=&apos;MAIN_CREDIT&apos; then [resource_impact_2]&\\#13;&\\#10;ELSEIF  [resource_name_3]=&apos;MAIN_CREDIT&apos;then [resource_impact_3]&\\#13;&\\#10;Else null&\\#13;&\\#10;END)/100",
+    "wb_name": "test"
+  },
+  "Index": {
+    "id": "[Calculation_3390416140144132]",
+    "formula": "index()",
+    "wb_name": "test"
+  },
+  "Usage[#/MIN/MB]": {
+    "id": "[Calculation_6510626141919681]",
+    "formula": "IF [record_type_id]=1 then  [usu]/60&#13;&#10;elseif [record_type_id]=2 then [usu]&#13;&#10;elseif [record_type_id]=3 &#13;&#10;then iif([mvno_id]=&apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos; and ISNULL([subs_acc_id]), [usu]/1024/1024, IFNULL([resource_usu_1],0)/1024/1024+IFNULL([resource_impact_2],0)/1024+IFNULL([resource_impact_3],0)/1024)&#13;&#10;else null end&#13;&#10;&#13;&#10;// elseif [record_type_id]=3 and [mvno_id]=&apos;MVNO_WW_TSL_TRANSATEL_MOBILE&apos; and NOT ISNULL([subs_acc_id])&#13;&#10;//then ([resource_usu_1]/1024/1024+[resource_impact_2]/1024+[resource_impact_3]/1024)",
+    "wb_name": "test"
+  },
+  "sum([Usage[#/MIN/MB]]])/COUNTD([msisdn])": {
+    "id": "[Calculation_653303476824420354]",
+    "formula": "sum([Calculation_6510626141919681])/COUNTD([msisdn])",
+    "wb_name": "test"
+  },
+  "VAIO CNT filter": {
+    "id": "[Calculation_731553531873861632]",
+    "formula": "if [Calculation_743375478405484546]=&apos;VAIO&apos; and [Calculation_927178611067146253]=&apos;JPN&apos;&#13;&#10;then &apos;false&apos;&#13;&#10;else  &apos;true&apos;&#13;&#10;end",
+    "wb_name": "test"
+  },
+  "AUPU (Mo)": {
+    "id": "[Calculation_927178611063930882]",
+    "formula": "sum([Calculation_6510626141919681])/COUNTD([msisdn])",
+    "wb_name": "test"
+  },
+  "Distinct users": {
+    "id": "[Calculation_927178611064721415]",
+    "formula": "COUNTD([msisdn])",
+    "wb_name": "test"
+  },
+  "Country name": {
+    "id": "[Calculation_927178611067146253]",
+    "formula": "REPLACE( MID([zone], FINDNTH([zone],&apos;_&apos;, 3) + 1, LEN([zone])), &apos;_&apos;, &apos; &apos;)",
+    "wb_name": "test"
+  },
+  "Traffic [GB]": {
+    "id": "[Calculation_927178611065151497]",
+    "formula": "//Traffic [GB]&#13;&#10;SUM([Calculation_6510626141919681])/1024",
+    "wb_name": "test"
+  },
+  "AUPU [MB]": {
+    "id": "[Calculation_927178611065249803]",
+    "formula": "//AUPU [MB]&#13;&#10;[Calculation_927178611063930882]",
+    "wb_name": "test"
+  }
+}

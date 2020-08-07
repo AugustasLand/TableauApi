@@ -2,7 +2,16 @@ import tablo
 import argparse
 import edit_file
 import tableauserverclient as TSC
+import json
+import os
 
+#TODO:
+'''
+- Test for deficiencies and bugs;
+- Fix formulas of measures, because now it's strange xml;
+- Find a way to extract measures from other sites;
+- Try and understand why some workbooks refuse to be published to other projects and or websites.
+'''
 parser = argparse.ArgumentParser(description='Executes tasks on workbooks')
 parser.add_argument('site', help='Site id from which workbooks will be copied or listed')
 parser.add_argument('cmd', help='Command for program, ex: copy, list, download, change_filter, get_report')
@@ -55,7 +64,7 @@ def path_splitter(new_proj):
             tablo.sign_in(site, True) #Signs back into the main site
         return project
 
-def checker():
+def commander():
     try:
         proj1 = proj.id
     except:
@@ -73,12 +82,40 @@ def checker():
     elif cmd == "change_filter":
         tdsx_path = tsc.finder(name, proj1, dsite, dproj, cmd)
         filter_list = fl.split(",")
-        tds_file = edit_file.unzip_tds(tdsx_path)
+        tds_file = edit_file.unzip(tdsx_path)
         edit_file.filter_change(tds_file, tdsx_path, filter_list)
         tsc.publisher(tdsx_path, dsite, dproj, tdsx_path)
 
     elif cmd == "get_report":
         tsc.get_report()
+
+    elif cmd == "update_measures":
+        dict = {}
+        for wb in tsc.item_list:
+            path_zip = tsc.downloader(wb, cmd, dsite, dproj.id, extract)
+            if ".twbx" in path_zip:
+                path = edit_file.unzip(path_zip).split(".")[0]
+            else:
+                path = wb.name
+            dict = edit_file.write_measures(path, dict)
+            os.remove(path_zip)
+
+        with open('MeasuresFile.json', 'w') as outfile:
+            json.dump(dict, outfile, indent=2)
+
+    elif cmd == "get_measures":
+        if name == None:
+            print("Please provide the name of the measure.")
+            exit()
+        else:
+            with open('MeasuresFile.json') as json_file:
+                data = json.load(json_file)
+                for measure in data:
+                    if name in measure:
+                        print("Name: " + data[measure]["name"])
+                        print("ID: " + data[measure]["id"])
+                        print("Workbook name: " + data[measure]["wb_name"])
+                        print("Formula: " + data[measure]["formula"])
 
     else:
         print("Wrong command provided")
@@ -87,4 +124,4 @@ def checker():
 if __name__ == "__main__":
     proj = path_splitter(proj)
     dproj = path_splitter(dproj)
-    checker()
+    commander()
